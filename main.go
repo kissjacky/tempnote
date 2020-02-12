@@ -15,6 +15,7 @@ import (
 
 func main() {
 	notedir := flag.String("notedir", "/tmp", "note dir")
+	port := flag.String("port", "8088", "http port")
 	flag.Parse()
 	*notedir += "/tempnotes"
 	if _, err := os.Stat(*notedir); err != nil {
@@ -70,5 +71,5 @@ func main() {
 	})
 
 	fmt.Printf("Note dir: %s\n", *notedir)
-	log.Fatal(http.ListenAndServe(":8088", nil))
+	log.Fatal(http.ListenAndServe(":"+*port, nil))
 }
