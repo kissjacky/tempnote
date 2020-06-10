@@ -16,6 +16,7 @@ import (
 func main() {
 	notedir := flag.String("notedir", "/tmp", "note dir")
 	port := flag.String("port", "8088", "http port")
+	staticPath := flag.String("staticPath", "./static", "static file path")
 	flag.Parse()
 	*notedir += "/tempnotes"
 	if _, err := os.Stat(*notedir); err != nil {
@@ -66,6 +67,14 @@ func main() {
 
 	http.HandleFunc("/", h1)
 	http.HandleFunc("/save", h2)
+	//http.HandleFunc("/static", func(w http.ResponseWriter, req *http.Request) {
+	//	http.ServeFile(w, req, req.URL.Path[1:])
+	//})
+
+	fmt.Println(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(*staticPath))))
+
+
 	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, _ *http.Request) {
 
 	})
